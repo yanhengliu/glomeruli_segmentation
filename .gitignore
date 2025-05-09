@@ -1,2 +1,9 @@
 data_preprocess/masks/
 data_preprocess/train/
+
+data_preprocess/train_set
+data_preprocess/train_masks/
+data_preprocess/val_set
+data_preprocess/val_masks
+data_preprocess/test_set/
+data_preprocess/test_masks/
