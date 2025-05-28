@@ -1,9 +1,66 @@
+# --- General Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.env
+*.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# --- Jupyter Notebooks ---
+.ipynb_checkpoints/
+*.ipynb_checkpoints/* # Ensure subdirectories are also ignored
+
+# --- Datasets ---
+# Main dataset directory and its contents
+datasets/
+# Specific paths you mentioned under data_preprocess
 data_preprocess/masks/
 data_preprocess/train/
-
-data_preprocess/train_set
-data_preprocess/train_masks/
-data_preprocess/val_set
-data_preprocess/val_masks
+data_preprocess/train_set/ # Assuming this might be a typo and meant datasets/train/
+data_preprocess/train_masks/ # Assuming this might be a typo and meant datasets/train/masks/
+data_preprocess/val_set/
+data_preprocess/val_masks/
 data_preprocess/test_set/
 data_preprocess/test_masks/
+# Zipped and raw downloaded datasets
+data_preprocess/hubmap-kidney-segmentation/
+data_preprocess/mask.zip
+data_preprocess/train.zip
+
+# --- Models ---
+# Main model output directory
+outputs_models/
+# Any specific model files by extension if stored elsewhere (optional)
+*.pth
+*.pt
+*.h5
+*.onnx
+
+# --- Experiment Logs & Outputs ---
+# U-Net training experiment logs
+unet_train/experiments/
+# Mask R-CNN training outputs (if it creates similar log/output directories)
+maskrcnn_train/outputs/
+# General log files
+*.log
+
+# --- IDE specific files ---
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# --- OS specific files ---
+.DS_Store
+Thumbs.db
+
+# --- Virtual Environment specific to conda (if created locally and not managed elsewhere) ---
+# If your conda environment 'maskrcnn_1' is created inside this project directory,
+# you might want to ignore its folder. Replace 'maskrcnn_1_env_folder' with actual name if applicable.
+# maskrcnn_1_env_folder/
