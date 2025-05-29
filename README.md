@@ -1,6 +1,6 @@
 # Glomeruli Segmentation Project
 
-This project focuses on the segmentation of glomeruli in kidney tissue images using deep learning models. It includes scripts for data preprocessing, model training (U-Net and Mask R-CNN), and evaluation.
+This project focuses on the segmentation of glomeruli in kidney tissue images using deep learning models. It includes scripts for data preprocessing, model training (U-Net and Mask R-CNN) and inference (Cerberus), and evaluation.
 
 ## Project Structure
 
@@ -28,8 +28,19 @@ The project is organized as follows:
 │   ├── outputs/
 │   └── scripts/
 ├── outputs_models/               # Saved trained model weights
-└── unet_train/                   # Notebook for U-Net model training
-    └── unet_train.ipynb
+├── unet_train/                   # Notebook for U-Net model training
+│   └── unet_train.ipynb
+└── cerberus_inference/           # Cerberus inference system
+    └── cerberus/
+        ├── run_infer_tile.py
+        ├── ...                   # Other Cerberus source files and modules
+        ├── data/
+        │   ├── input/             # Copied from datasets/test_images
+        │   ├── masks/             # Copied from datasets/test_masks
+        │   └── output/            # Generated prediction masks
+        └── resnet34_cerberus/     # Pretrained Cerberus model
+            ├── settings.yml
+            └── weights.tar
 ```
 
 ## Overview
@@ -41,7 +52,12 @@ The project is organized into several key components:
 * **Model Training:**
     * **U-Net (`unet_train/unet_train.ipynb`):** Contains the Jupyter Notebook for training the U-Net segmentation model.
     * **Mask R-CNN (`maskrcnn_train/`):** Contains scripts and resources related to training a Mask R-CNN model (likely for instance segmentation).
-* **Model Evaluation (`evaluation/`):** Jupyter Notebooks for evaluating the performance of the trained U-Net and Mask R-CNN models on the test set. This includes calculating metrics like IoU and Dice score, and visualizing predictions.
+* **Model Inference (`cerberus_inference/`):** Contains the Cerberus inference engine. It includes:
+    * A cloned Cerberus repository inside `cerberus_inference/cerberus/`
+    * Pretrained model weights and settings (`resnet34_cerberus/`)
+    * Prepared test data in `cerberus_inference/cerberus/data/`
+    * The script `run_infer_tile.py` for patch-based inference
+* **Model Evaluation (`evaluation/`):** Jupyter Notebooks for evaluating the performance of the trained U-Net, Mask R-CNN, and Cerberus models on the test set. This includes calculating metrics like IoU and Dice score, and visualizing predictions.
 * **Saved Models (`outputs_models/`):** This directory is intended to store the weights of the trained models.
 * **Environment Check (`check_env_versions_1.py`):** A utility script to verify the versions of Python and critical libraries in the current environment.
 
@@ -55,7 +71,12 @@ The project is organized into several key components:
     * Navigate to `unet_train/` and run `unet_train.ipynb` to train the U-Net model.
     * (Similarly for Mask R-CNN if applicable).
     * Ensure model weights are saved to `outputs_models/`.
-4.  **Model Evaluation:**
+4. **Inference with Cerberus Model:**  
+   * Clone Cerberus repo into `cerberus_inference/cerberus/`.
+   * Place pretrained weights in `resnet34_cerberus/` and copy test data to `data/`.
+   * Run `run_infer_tile.py` for inference.
+
+5.  **Model Evaluation:**
     * Navigate to `evaluation/` and run `evaluation_unet.ipynb` or `evaluation_maskrcnn.ipynb` to assess model performance, ensuring the `MODEL_PATH` in these notebooks points to your saved models.
 
 ---
@@ -79,5 +100,53 @@ The project is organized into several key components:
     Ensure that any necessary configurations for the Mask R-CNN training script (e.g., dataset paths, hyperparameters) are correctly set within the `scripts.train` module or its associated configuration files.
 
 After training, ensure your model weights are saved, typically to the `outputs_models/` directory.
+
+---
+
+### Inference with Cerberus Model
+
+To perform inference with a pretrained Cerberus model:
+
+### 1. Setup Cerberus Inference Folder
+
+From the root of your project, navigate to `cerberus_inference/` and run:
+
+```bash
+cd cerberus_inference/
+git clone https://github.com/TissueImageAnalytics/cerberus.git cerberus
+```
+
+1. Download and place the pretrained model weights (e.g., `resnet34_cerberus`) into:
+
+```
+cerberus_inference/cerberus/resnet34_cerberus/
+```
+
+2. Copy test datasets into Cerberus's expected structure:
+
+```bash
+mkdir -p cerberus/data
+cp -r ../datasets/test_images cerberus/data/input
+cp -r ../datasets/test_masks cerberus/data/masks
+```
+
+### 2. Run Inference
+
+Navigate into the Cerberus folder and run the tile-based inference script:
+
+```bash
+cd cerberus/  # inside cerberus_inference
+
+python3 run_infer_tile.py \
+  --gpu=2 \
+  --batch_size=4 \
+  --model ./resnet34_cerberus \
+  --input_dir data/input \
+  --output_dir data/output \
+  --patch_input_shape=256 \
+  --patch_output_shape=256
+```
+
+----
 
 This README provides a basic outline. You can expand it with more details on specific preprocessing steps, model architectures, training parameters, and exact commands as your project develops.
