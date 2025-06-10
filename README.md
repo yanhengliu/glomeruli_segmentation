@@ -23,7 +23,8 @@ The project is organized as follows:
 │   └── val/
 ├── evaluation/                   # Notebooks for model evaluation
 │   ├── evaluation_maskrcnn.ipynb
-│   └── evaluation_unet.ipynb
+│   ├── evaluation_unet.ipynb
+│   └── evaluation_cerberus.ipynb
 ├── maskrcnn_train/               # Scripts and outputs for Mask R-CNN training
 │   ├── outputs/
 │   └── scripts/
@@ -53,13 +54,47 @@ The project is organized into several key components:
     * **U-Net (`unet_train/unet_train.ipynb`):** Contains the Jupyter Notebook for training the U-Net segmentation model.
     * **Mask R-CNN (`maskrcnn_train/`):** Contains scripts and resources related to training a Mask R-CNN model (likely for instance segmentation).
 * **Model Inference (`cerberus_inference/`):** Contains the Cerberus inference engine. It includes:
-    * A cloned Cerberus repository inside `cerberus_inference/cerberus/`
+    * A cloned Cerberus repository inside `cerberus_inference/`(you can check: https://github.com/TissueImageAnalytics/cerberus)
     * Pretrained model weights and settings (`resnet34_cerberus/`)
     * Prepared test data in `cerberus_inference/cerberus/data/`
     * The script `run_infer_tile.py` for patch-based inference
 * **Model Evaluation (`evaluation/`):** Jupyter Notebooks for evaluating the performance of the trained U-Net, Mask R-CNN, and Cerberus models on the test set. This includes calculating metrics like IoU and Dice score, and visualizing predictions.
 * **Saved Models (`outputs_models/`):** This directory is intended to store the weights of the trained models.
 * **Environment Check (`check_env_versions_1.py`):** A utility script to verify the versions of Python and critical libraries in the current environment.
+
+
+## Requirements
+
+Below are the specific library requirements for each model. Make sure your environment matches these configurations for smooth execution.
+
+For cerberus follow their git repository instructions.
+
+### U-Net (tested environment)
+
+- Python ≥ 3.8  
+- `numpy==1.24.4`  
+- `opencv-python==4.11.0`  
+- `torch==2.4.1`  
+- `torchvision==0.19.1`  
+- `Pillow==10.4.0`  
+- `scipy==1.10.1`  
+- `scikit-image==0.21.0`  
+- `matplotlib==3.7.5`  
+- `albumentations==1.4.18`  
+- `tqdm==4.67.1`  
+- `tensorboard==2.14.0`  
+- `torchmetrics==1.5.0`  
+
+### Mask R-CNN (tested environment)
+
+- `torch==1.10.1+cu113`  
+- `torchvision==0.11.2+cu113`  
+- `numpy==1.26.3`  
+- `Pillow==10.2.0`  
+- `scikit-image==0.22.0`  
+- `tqdm==4.66.1`  
+- `tensorboard==2.15.1`
+
 
 ## Getting Started (General Steps)
 
